@@ -1,0 +1,122 @@
+:root {
+  font-family: 'Poppins', system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  color-scheme: light dark;
+  color: rgba(255, 255, 255, 0.87);
+  background: url('https://cypes.grupoeurohispana.com/img/recursos/3111/tecnico-superior-en-prevencion-de-riesgos-profesionales-fondo-700x200-1-20240229042858.jpg') no-repeat center center fixed;
+  background-size: cover;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  --primary-color: #646cff;
+  --primary-hover-color: #535bf2;
+  --secondary-color: #f9f9f9;
+  --background-dark: #1a1a1a;
+  --background-light: #ffffff;
+  --text-dark: #213547;
+  --text-light: rgba(255, 255, 255, 0.87);
+}
+
+body {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 320px;
+  min-height: 100vh;background-size: cover;
+  color: var(--secondary-color);
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.app-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background-color: rgba(255, 255, 255, 0.8);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+  max-width: 1280px;
+  margin: 20px auto;
+}
+
+.app-header {
+  width: 100%;
+  background-color: #2e96eb;
+  color: white;
+  text-align: center;
+  padding: 20px 0;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 5px rgba(20, 199, 41, 0.1);
+  border-radius: 0 0 12px 12px;
+}
+
+.app-header h1 {
+  margin: 0;
+  font-size: 28px;
+  font-weight: 600;
+  letter-spacing: 1px;
+}
+
+.app-tabs {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+  background-color: #050060;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.tab-button {
+  flex: 1;
+  padding: 10px 20px;
+  background-color: transparent;
+  color: white;
+  font-size: 16px;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: background-color 300ms, color 300ms;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.tab-button:hover {
+  background-color: #005bb5;
+}
+
+.tab-button.active {
+  background-color: white;
+  color: #0078d7;
+  font-weight: bold;
+  border-bottom: 2px solid #005bb5;
+}
+
+.app-main {
+  width: 100%;
+  max-width: 1200px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  transition: box-shadow 300ms;
+}
+.app-main:hover {
+  box-shadow: 0 6px 15px rgba(210, 15, 15, 0.15);
+}
+
+.app-footer {
+  margin-top: 20px;
+  text-align: center;
+  color: #888;
+  font-size: 14px;
+  padding: 10px 0;
+  background-color: #f1f5f9;
+  border-top: 1px solid #ddd;
+}

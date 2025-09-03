@@ -1,0 +1,115 @@
+
+.detalle-evento-container {
+  max-width: 600px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  font-family: 'Poppins', Arial, sans-serif;
+}
+
+.detalle-evento-title {
+  font-size: 1.8rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+  text-align: center;
+  color: #a81f1f;
+}
+
+
+.detalle-evento-info {
+  margin-bottom: 1rem;
+}
+
+
+.detalle-evento-info p {
+  font-size: 1rem;
+  margin: 0.5rem 0;
+  color: #555;
+}
+
+
+.detalle-evento-evidencia {
+  display: inline-block;
+  margin-top: 1rem;
+  color: #646cff;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.3s;
+}
+
+.detalle-evento-evidencia:hover {
+  color: #535bf2;
+}
+
+
+.detalle-evento-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 1rem; 
+}
+
+.detalle-evento-button {
+  width: 60%;
+  padding: 0.5rem;
+  font-size: 1.1rem;
+  font-weight: 300;
+  color: white; 
+  background: linear-gradient(135deg, #646cff, #535bf2);
+  border: none; 
+  border-radius: 8px;
+  cursor: pointer; 
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.detalle-evento-button:hover {
+  background: linear-gradient(135deg, #535bf2, #646cff);
+}
+
+.detalle-evento-button:hover {
+  background: linear-gradient(135deg, #535bf2, #646cff);
+  transform: translateY(-3px);
+}
+
+.detalle-evento-button:active {
+  transform: translateY(0);
+}
+
+@media (max-width: 768px) {
+  .detalle-evento-container {
+    padding: 1.5rem;
+  }
+  .detalle-evento-title {
+    font-size: 1.5rem;
+  }
+}
+
+.detalle-evento-info label {
+  display: block;
+  margin-bottom: 1rem;
+  font-weight: 500;
+  color: #333;
+}
+
+.detalle-evento-info input,
+.detalle-evento-info textarea {
+  width: 100%;
+  padding: 0.5rem;
+  font-size: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  outline: none;
+  transition: border-color 0.3s;
+}
+
+.detalle-evento-info input:focus,
+.detalle-evento-info textarea:focus {
+  border-color: #535bf2;
+}
+
+.detalle-evento-info textarea {
+  min-height: 100px;
+  resize: vertical;
+}
