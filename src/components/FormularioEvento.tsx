@@ -9,6 +9,8 @@ interface FormData {
   lugar: string;
   persona_afectada: string;
   descripcion: string;
+  estado: string;
+  prioridad: string;
 }
 
 export default function FormularioEvento() {
@@ -18,8 +20,11 @@ export default function FormularioEvento() {
     lugar: '',
     persona_afectada: '',
     descripcion: '',
+    estado: 'pendiente',
+    prioridad: 'media'
   });
   const [evidencia, setEvidencia] = useState<File | null>(null);
+  const [imagenesAdicionales, setImagenesAdicionales] = useState<File[]>([]);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -31,17 +36,62 @@ export default function FormularioEvento() {
     }
   };
 
+  const handleImagenesAdicionalesChange = (e: ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      const files = Array.from(e.target.files);
+      setImagenesAdicionales(prev => [...prev, ...files]);
+    }
+  };
+
+  const removeImagenAdicional = (index: number) => {
+    setImagenesAdicionales(prev => prev.filter((_, i) => i !== index));
+  };
+
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     const data = new FormData();
     Object.entries(form).forEach(([key, value]) => data.append(key, value));
     if (evidencia) data.append('evidencia', evidencia);
 
-    const res = await API.post('/eventos', data);
-    console.log("res");
-    console.log(res);
-    
-    alert('Evento registrado');
+    try {
+      const res = await API.post('/eventos', data);
+      console.log("Evento creado:", res.data);
+      
+      // Si hay imágenes adicionales, subirlas una por una
+      if (imagenesAdicionales.length > 0 && res.data.id) {
+        for (const imagen of imagenesAdicionales) {
+          const imagenData = new FormData();
+          imagenData.append('imagen', imagen);
+          
+          try {
+            await API.post(`/eventos/${res.data.id}/imagenes`, imagenData, {
+              headers: { 'Content-Type': 'multipart/form-data' }
+            });
+          } catch (error) {
+            console.error('Error al subir imagen adicional:', error);
+          }
+        }
+      }
+      
+      alert('Evento registrado exitosamente');
+      
+      // Limpiar formulario
+      setForm({
+        fecha: '',
+        tipo: '',
+        lugar: '',
+        persona_afectada: '',
+        descripcion: '',
+        estado: 'pendiente',
+        prioridad: 'media'
+      });
+      setEvidencia(null);
+      setImagenesAdicionales([]);
+      
+    } catch (error) {
+      console.error('Error al crear evento:', error);
+      alert('Error al registrar el evento');
+    }
   };
 
   return (
@@ -59,6 +109,27 @@ export default function FormularioEvento() {
           <option value="">Seleccione tipo</option>
           <option value="accidente">Accidente</option>
           <option value="incidente">Incidente</option>
+          <option value="casi_accidente">Casi Accidente</option>
+        </select>
+      </div>
+
+      <div className="form-group">
+        <label htmlFor="estado">Estado:</label>
+        <select id="estado" name="estado" onChange={handleChange} value={form.estado}>
+          <option value="pendiente">Pendiente</option>
+          <option value="en_revision">En Revisión</option>
+          <option value="resuelto">Resuelto</option>
+          <option value="cerrado">Cerrado</option>
+        </select>
+      </div>
+
+      <div className="form-group">
+        <label htmlFor="prioridad">Prioridad:</label>
+        <select id="prioridad" name="prioridad" onChange={handleChange} value={form.prioridad}>
+          <option value="baja">Baja</option>
+          <option value="media">Media</option>
+          <option value="alta">Alta</option>
+          <option value="critica">Crítica</option>
         </select>
       </div>
 
@@ -91,8 +162,49 @@ export default function FormularioEvento() {
       </div>
 
       <div className="form-group">
-        <label htmlFor="evidencia">Evidencia:</label>
-        <input type="file" id="evidencia" onChange={handleFileChange} />
+        <label htmlFor="evidencia">Imagen Principal:</label>
+        <input type="file" id="evidencia" accept="image/*" onChange={handleFileChange} />
+        {evidencia && (
+          <div className="imagen-preview">
+            <img 
+              src={URL.createObjectURL(evidencia)} 
+              alt="Preview" 
+              style={{ width: '200px', height: '150px', objectFit: 'cover', marginTop: '10px' }}
+            />
+          </div>
+        )}
+      </div>
+
+      <div className="form-group">
+        <label htmlFor="imagenes-adicionales">Imágenes Adicionales:</label>
+        <input 
+          type="file" 
+          id="imagenes-adicionales" 
+          accept="image/*" 
+          multiple 
+          onChange={handleImagenesAdicionalesChange} 
+        />
+        {imagenesAdicionales.length > 0 && (
+          <div className="imagenes-adicionales-preview">
+            <h4>Imágenes seleccionadas:</h4>
+            {imagenesAdicionales.map((imagen, index) => (
+              <div key={index} className="imagen-adicional-item">
+                <img 
+                  src={URL.createObjectURL(imagen)} 
+                  alt={`Preview ${index + 1}`}
+                  style={{ width: '150px', height: '100px', objectFit: 'cover', margin: '5px' }}
+                />
+                <button 
+                  type="button" 
+                  onClick={() => removeImagenAdicional(index)}
+                  style={{ marginLeft: '10px' }}
+                >
+                  Eliminar
+                </button>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
 
       <button className="form-button" type="submit">
