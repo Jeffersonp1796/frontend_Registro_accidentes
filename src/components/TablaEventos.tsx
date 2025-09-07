@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import type { Evento } from '../types.ts';
 import API from '../api';
+import { parseImagenesAdicionales, tieneImagenes } from '../utils/imageUtils';
 import './TablaEventos.css';
 
 interface Props {
@@ -70,15 +71,19 @@ export default function TablaEventos({ onDetalle }: Props) {
                   {e.imagen_principal_url && (
                     <span className="imagen-indicator" title="Imagen principal">📷</span>
                   )}
-                  {e.imagenes_adicionales && e.imagenes_adicionales.length > 0 && (
-                    <span className="imagen-indicator" title={`${e.imagenes_adicionales.length} imágenes adicionales`}>
-                      📸 {e.imagenes_adicionales.length}
-                    </span>
-                  )}
+                  {(() => {
+                    const imagenesAdicionales = parseImagenesAdicionales(e.imagenes_adicionales);
+                    
+                    return imagenesAdicionales.length > 0 && (
+                      <span className="imagen-indicator" title={`${imagenesAdicionales.length} imágenes adicionales`}>
+                        📸 {imagenesAdicionales.length}
+                      </span>
+                    );
+                  })()}
                   {e.evidencia && (
                     <span className="imagen-indicator" title="Evidencia legacy">📁</span>
                   )}
-                  {!e.imagen_principal_url && (!e.imagenes_adicionales || e.imagenes_adicionales.length === 0) && !e.evidencia && (
+                  {!tieneImagenes(e) && (
                     <span className="sin-imagen">Sin imágenes</span>
                   )}
                 </div>

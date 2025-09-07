@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import API from '../api';
 import type { Evento, ImagenAdicional } from '../types';
+import { parseImagenesAdicionales } from '../utils/imageUtils';
 import './DetalleEvento.css';
 
 interface Props {
@@ -212,28 +213,32 @@ export default function DetalleEvento({ id, onVolver }: Props) {
           )}
           
           {/* Imágenes Adicionales */}
-          {evento.imagenes_adicionales && evento.imagenes_adicionales.length > 0 && (
-            <div className="imagenes-adicionales">
-              <h4>Imágenes Adicionales:</h4>
-              <div className="imagenes-grid">
-                {evento.imagenes_adicionales.map((imagen, index) => (
-                  <div key={index} className="imagen-item">
-                    <img 
-                      src={imagen.url} 
-                      alt={`Imagen adicional ${index + 1}`}
-                      style={{ width: '200px', height: '150px', objectFit: 'cover' }}
-                    />
-                    <button 
-                      onClick={() => handleEliminarImagen(imagen.public_id)}
-                      className="eliminar-imagen-btn"
-                    >
-                      Eliminar
-                    </button>
-                  </div>
-                ))}
+          {(() => {
+            const imagenesAdicionales = parseImagenesAdicionales(evento.imagenes_adicionales);
+            
+            return imagenesAdicionales.length > 0 && (
+              <div className="imagenes-adicionales">
+                <h4>Imágenes Adicionales:</h4>
+                <div className="imagenes-grid">
+                  {imagenesAdicionales.map((imagen, index) => (
+                    <div key={index} className="imagen-item">
+                      <img 
+                        src={imagen.url} 
+                        alt={`Imagen adicional ${index + 1}`}
+                        style={{ width: '200px', height: '150px', objectFit: 'cover' }}
+                      />
+                      <button 
+                        onClick={() => handleEliminarImagen(imagen.public_id)}
+                        className="eliminar-imagen-btn"
+                      >
+                        Eliminar
+                      </button>
+                    </div>
+                  ))}
+                </div>
               </div>
-            </div>
-          )}
+            );
+          })()}
           
           {/* Evidencia Legacy */}
           {evento.evidencia && (
